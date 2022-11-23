@@ -1,4 +1,5 @@
 using LoanAPI.Models;
+using LoanAPI.Models.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Cors
+builder.Services.AddCors(options => options.AddPolicy("AllowWebApp",
+                                    builder => builder.AllowAnyOrigin()
+                                                      .AllowAnyHeader()
+                                                      .AllowAnyMethod()));
+
 // Add db context
 builder.Services.AddDbContext<AplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSQLServer"));
 });
+
+// Automapper
+builder.Services.AddAutoMapper(typeof(Program));
+
+// Add Services
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>(); // Lo mismo con Loan, Person y Thing para DEPENDENCY INJECTION
 
 var app = builder.Build();
 
@@ -24,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowWebApp");
 
 app.UseHttpsRedirection();
 
