@@ -1,6 +1,8 @@
-﻿namespace LoanAPI.Models.DTO
+﻿using LoanAPI.IDTO;
+
+namespace LoanAPI.Models.DTO
 {
-    public class CategoriesDTO
+    public class CategoriesDTO : IBaseDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

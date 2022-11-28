@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanAPI.Migrations
 {
     [DbContext(typeof(AplicationDbContext))]
-    [Migration("20221121184515_initial")]
-    partial class initial
+    [Migration("20221128145551_v0.1")]
+    partial class v01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,19 +28,25 @@ namespace LoanAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(3);
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(1);
 
                     b.HasKey("Id");
 
@@ -51,26 +57,36 @@ namespace LoanAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(5);
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnOrder(1);
 
                     b.Property<int>("PersonId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(3);
 
                     b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnOrder(2);
 
                     b.Property<int>("ThingId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(4);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("ThingId");
 
                     b.ToTable("Loans");
                 });
@@ -83,6 +99,9 @@ namespace LoanAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,9 +111,11 @@ namespace LoanAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -113,7 +134,7 @@ namespace LoanAPI.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -125,7 +146,44 @@ namespace LoanAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Things");
+                });
+
+            modelBuilder.Entity("LoanAPI.Models.Entities.Loan", b =>
+                {
+                    b.HasOne("LoanAPI.Models.Entities.Person", "BorrowerPerson")
+                        .WithMany("PersonLoans")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoanAPI.Models.Entities.Thing", "BorrowedThing")
+                        .WithMany()
+                        .HasForeignKey("ThingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BorrowedThing");
+
+                    b.Navigation("BorrowerPerson");
+                });
+
+            modelBuilder.Entity("LoanAPI.Models.Entities.Thing", b =>
+                {
+                    b.HasOne("LoanAPI.Models.Entities.Categories", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("LoanAPI.Models.Entities.Person", b =>
+                {
+                    b.Navigation("PersonLoans");
                 });
 #pragma warning restore 612, 618
         }

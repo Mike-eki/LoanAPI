@@ -1,9 +1,11 @@
-﻿using LoanAPI.Models.IRepository;
+﻿using LoanAPI.Context;
+using LoanAPI.Context.IEntity;
+using LoanAPI.Models.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoanAPI.Models.Repositories
 {
-    public class RepositoryAsync<T> : IRepository<T> where T : class
+    public class RepositoryAsync<T> : IRepository<T> where T : class, IBaseEntity
     {
         private readonly AplicationDbContext _context;
         public RepositoryAsync(AplicationDbContext context)
@@ -32,11 +34,20 @@ namespace LoanAPI.Models.Repositories
             await _context.SaveChangesAsync();
             return entity;
         }
-        public async Task<T> Update(T entity)
+        public async Task Update(T entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            //var matchedEntity = await EntitySet.FirstOrDefaultAsync(x => x.Id == entity.Id);
+
+            //if(matchedEntity != null)
+            //{
+            ////_context.Entry(entity).State = EntityState.Modified;
+            //}
+
+             _context.Update(entity);
             await _context.SaveChangesAsync();
-            return entity;
+
+
+            //_context.Update(entity);
         }
         public async Task DeleteById(int id)
         {

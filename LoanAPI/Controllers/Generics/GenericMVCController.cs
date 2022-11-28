@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace LoanAPI.Controllers
+namespace LoanAPI.Controllers.Generics
 {
-    public abstract class GenericController<Model, Entity> : Controller where Entity : class where Model : Models.Model , new() 
+    public abstract class GenericMVCController<Model, Entity> : Controller where Entity : class where Model : Models.Model, new()
     {
         private readonly IRepository<Entity> _repository;
         private readonly IMapper _mapper;
 
-        protected GenericController(IRepository<Entity> repository, IMapper mapper )
+        protected GenericMVCController(IRepository<Entity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -25,7 +25,7 @@ namespace LoanAPI.Controllers
         public async Task<IActionResult> Get(int? id)
         {
             var model = new Model();
-            if(id == null)
+            if (id == null)
             {
                 model.Id = 0;
                 return PartialView("Get", model);
@@ -49,7 +49,7 @@ namespace LoanAPI.Controllers
             {
                 entity = _mapper.Map<Entity>(model);
 
-                if(model.Id > 0)
+                if (model.Id > 0)
                 {
                     await _repository.Update(entity);
                 }

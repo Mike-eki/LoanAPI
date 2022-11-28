@@ -8,8 +8,7 @@ namespace LoanAPI.Models.Profiles
     {
         public CategoriesProfile()
         {
-            CreateMap<Categories, CategoriesDTO>();
-            CreateMap<CategoriesDTO, Categories>();
+            CreateMap<Categories, CategoriesDTO>().ReverseMap();
         }
     }
 }

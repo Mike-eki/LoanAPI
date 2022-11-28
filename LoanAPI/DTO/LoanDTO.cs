@@ -1,6 +1,8 @@
-﻿namespace LoanAPI.Models.DTO
+﻿using LoanAPI.IDTO;
+
+namespace LoanAPI.Models.DTO
 {
-    public class LoanDTO
+    public class LoanDTO : IBaseDTO
     {
         public int Id { get; set; }
         public int PersonId { get; set; }

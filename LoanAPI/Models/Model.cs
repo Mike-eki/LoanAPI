@@ -1,6 +1,8 @@
-﻿namespace LoanAPI.Models
+﻿using LoanAPI.Models.IModel;
+
+namespace LoanAPI.Models
 {
-    public class Model
+    public class Model : IBaseModel
     {
         public int Id { get; set; }
     }
