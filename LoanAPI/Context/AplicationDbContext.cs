@@ -13,6 +13,5 @@ namespace LoanAPI.Context
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Thing> Things { get; set; }
-        public DbSet<LoanAPI.Models.DTO.PersonDTO> PersonDTO { get; set; }
     }
 }

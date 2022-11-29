@@ -24,7 +24,6 @@ builder.Services.AddCors(options => options.AddPolicy("AllowWebApp",
 builder.Services.AddDbContext<AplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionSQLServer"));
-    options.EnableSensitiveDataLogging();
 });
 
 // Automapper
@@ -51,7 +50,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapPersonDTOEndpoints();
 
 app.Run();

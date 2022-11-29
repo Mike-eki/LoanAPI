@@ -36,18 +36,9 @@ namespace LoanAPI.Models.Repositories
         }
         public async Task Update(T entity)
         {
-            //var matchedEntity = await EntitySet.FirstOrDefaultAsync(x => x.Id == entity.Id);
-
-            //if(matchedEntity != null)
-            //{
-            ////_context.Entry(entity).State = EntityState.Modified;
-            //}
-
-             _context.Update(entity);
+            _context.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-
-            //_context.Update(entity);
         }
         public async Task DeleteById(int id)
         {
@@ -55,6 +46,12 @@ namespace LoanAPI.Models.Repositories
             EntitySet.Remove(entity);
             await _context.SaveChangesAsync();
         }
+
+        //public async Task AlreadyExists(int id, T entity)
+        //{
+        //    var entityItem = await EntitySet.FindAsync(id);
+        //    var exist = await EntitySet.AnyAsync(entity);
+        //}
 
         private bool disposed = false;
 

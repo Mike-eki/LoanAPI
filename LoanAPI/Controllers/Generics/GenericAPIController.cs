@@ -85,6 +85,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpPost]
+        //Verificar de que no añada el dato si ya existe
         public async Task<IActionResult> Create(DTO dto)
         {
             try
@@ -106,7 +107,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpPut("{id}")]
-
+        // Verificar de no modificar el dato si es que ya existe
         public async Task<IActionResult> Save(int id, DTO dto)
         {
             try
@@ -116,7 +117,7 @@ namespace LoanAPI.Controllers.Generics
                     return BadRequest();
                 }
 
-
+                //var entity = _mapper.Map<Entity>(dto);
                 var entityItem = await _repository.GetById(id);
 
                 if (entityItem == null)
@@ -124,8 +125,16 @@ namespace LoanAPI.Controllers.Generics
                     return NotFound();
                 }
 
-                var entity = _mapper.Map<Entity>(dto);
-                entity.CreationTime = entityItem.CreationTime;
+                var entity = _mapper.Map(dto, entityItem);
+
+                //var originalCreationTime = entityItem.CreationTime;
+
+                //foreach (var prop in entityItem.GetType().GetProperties())
+                //{
+                //    entityItem.GetType()?.GetProperty(prop.Name)?.SetValue(entityItem, prop.GetValue(entity, null), null);
+                //}
+
+                //entityItem.CreationTime = originalCreationTime;
 
                 await _repository.Update(entity);
 

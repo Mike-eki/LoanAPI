@@ -7,6 +7,7 @@ namespace LoanAPI.Models.Entities
     public class Categories : IBaseEntity
     {
         [Key]
+        [InverseProperty("Category")]
         [Column(Order = 0)]
         public int Id { get; set; }
 
