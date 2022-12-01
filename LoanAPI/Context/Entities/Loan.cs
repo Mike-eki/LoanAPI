@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LoanAPI.Models.Entities
+namespace LoanAPI.Context.Entities
 {
     public class Loan : IBaseEntity
     {

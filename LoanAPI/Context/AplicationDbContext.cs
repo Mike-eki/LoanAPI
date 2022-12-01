@@ -1,6 +1,6 @@
-﻿using LoanAPI.Models.Entities;
-using Microsoft.EntityFrameworkCore;
-using LoanAPI.Models.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using LoanAPI.Context.Entities;
+
 namespace LoanAPI.Context
 {
     public class AplicationDbContext : DbContext
@@ -13,5 +13,6 @@ namespace LoanAPI.Context
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Thing> Things { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

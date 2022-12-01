@@ -3,8 +3,8 @@ using LoanAPI.Context.IEntity;
 using LoanAPI.ExtensionMethods;
 using LoanAPI.IDTO;
 using LoanAPI.Models.DTO;
-using LoanAPI.Models.Entities;
 using LoanAPI.Models.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +24,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpGet]
+        [Authorize(Roles = "User,Administrator")]
         public async Task<IActionResult> Get()
         {
             try
@@ -41,6 +42,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -63,6 +65,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -85,6 +88,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         //Verificar de que no añada el dato si ya existe
         public async Task<IActionResult> Create(DTO dto)
         {
@@ -107,6 +111,7 @@ namespace LoanAPI.Controllers.Generics
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         // Verificar de no modificar el dato si es que ya existe
         public async Task<IActionResult> Save(int id, DTO dto)
         {
@@ -117,7 +122,6 @@ namespace LoanAPI.Controllers.Generics
                     return BadRequest();
                 }
 
-                //var entity = _mapper.Map<Entity>(dto);
                 var entityItem = await _repository.GetById(id);
 
                 if (entityItem == null)
@@ -126,15 +130,6 @@ namespace LoanAPI.Controllers.Generics
                 }
 
                 var entity = _mapper.Map(dto, entityItem);
-
-                //var originalCreationTime = entityItem.CreationTime;
-
-                //foreach (var prop in entityItem.GetType().GetProperties())
-                //{
-                //    entityItem.GetType()?.GetProperty(prop.Name)?.SetValue(entityItem, prop.GetValue(entity, null), null);
-                //}
-
-                //entityItem.CreationTime = originalCreationTime;
 
                 await _repository.Update(entity);
 

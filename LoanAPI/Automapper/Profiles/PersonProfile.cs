@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LoanAPI.Models.DTO;
-using LoanAPI.Models.Entities;
+using LoanAPI.Context.Entities;
 
 namespace LoanAPI.Models.Profiles
 {

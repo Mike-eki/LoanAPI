@@ -1,4 +1,5 @@
 ﻿using LoanAPI.Context.IEntity;
+using LoanAPI.IRepository;
 
 namespace LoanAPI.Models.IRepository
 {

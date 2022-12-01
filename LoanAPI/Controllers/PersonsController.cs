@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LoanAPI.Controllers.Generics;
 using LoanAPI.Models.DTO;
-using LoanAPI.Models.Entities;
+using LoanAPI.Context.Entities;
 using LoanAPI.Models.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

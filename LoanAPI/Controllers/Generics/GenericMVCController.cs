@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoanAPI.Controllers.Generics
 {
-    public abstract class GenericMVCController<Model, Entity> : Controller where Entity : class where Model : Models.Model, new()
+    public abstract class GenericMVCController<Model, Entity> : Controller where Entity : class where Model : Models.IModel.IBaseModel, new()
     {
         private readonly IRepository<Entity> _repository;
         private readonly IMapper _mapper;
